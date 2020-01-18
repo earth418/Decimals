@@ -1,4 +1,5 @@
 #include "Decimals.h"
+#include <iostream>
 
 using namespace std;
 
@@ -7,11 +8,19 @@ Decimal::Decimal(auto exp, auto num)
     numbr = numberToArray(num);
     exponent = exp;
 }
-Decimal::Decimal(float inp)
+Decimal::Decimal(double inp)
 {
-    // if (int(inp) == inp)
-    //     return;
-    // return;
+    string in = to_string(inp);
+    in.resize(17, '0');
+    char pt = 0;
+    //cout<<in << "\n";
+    for (char i = 16; i > 0; i--) {
+        if (in.at(i) != '0')
+            pt = i;
+    }
+    char i = to_string(inp).length() - to_string(inp).find('.') - (pt);
+    numbr = numberToArray(inp * pow(10, i));
+    exponent = -i;
 }
 
 std::vector<unsigned char> Decimal::numberToArray(auto numb)
@@ -51,7 +60,7 @@ string Decimal::toString()
         }
         return rString + to_string(number);
     }
-    else if (exponent < 0 && exponent <= digits) {
+    else if (exponent < 0 && abs(exponent) <= digits) {
         string m = to_string(number);
         m.insert(m.length() + exponent, ".");
         return m;
@@ -69,4 +78,19 @@ inline Decimal Decimal::operator+(auto right)
 }
 float Decimal::toFloat() {
     return arrayToNumber(numbr) * pow(10, exponent);
+}
+
+int main()
+{
+    double m = 1523232.24435255;
+    Decimal x = m;
+    //Decimal x{m};
+    cout << sizeof(Decimal) << "\n";
+    cout<< x.toString() << "\n";
+    cout<< x.exponent << "\n";
+    cout << x.arrayToNumber(x.numbr);
+
+
+    cout<<"\n";
+    return 0;
 }
