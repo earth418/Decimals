@@ -9,20 +9,25 @@ using namespace std;
 
 struct Decimal
 {
-    std::vector<unsigned char> numberToArray(auto numb);
+    /*std::vector<unsigned char>*/ void numberToArray(auto numb, unsigned char (&outArray)[7]);
     
-    unsigned long arrayToNumber(std::vector<unsigned char> inArray);
+    unsigned long arrayToNumber(unsigned char inArray[7]);//std::vector<unsigned char> inArray);
     
     char exponent;
-    std::vector<unsigned char> numbr;
+    unsigned char numbr[7] = {0, 0, 0, 0, 0, 0, 0};
 
-    Decimal(auto exp, auto num);
+    Decimal(auto num, auto exp);
+    Decimal(long inp);
+    Decimal(int inp);
     Decimal(double inp);
 
     std::string toString();
 
     inline Decimal operator+(Decimal right);
     inline Decimal operator+(auto right);
+
+    inline Decimal operator*(Decimal right);
+    inline Decimal operator*(auto right);
 
     float toFloat();
 };

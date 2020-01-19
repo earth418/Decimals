@@ -3,42 +3,50 @@
 
 using namespace std;
 
-Decimal::Decimal(auto exp, auto num)
+Decimal::Decimal(auto num, auto exp)
 {
-    numbr = numberToArray(num);
+    numberToArray(num, numbr);
     exponent = exp;
+}
+Decimal::Decimal(long inp)
+{
+    numberToArray(inp, numbr);
+    exponent = 0;
+}
+Decimal::Decimal(int inp)
+{
+    numberToArray(inp, numbr);
+    exponent = 0;
 }
 Decimal::Decimal(double inp)
 {
     string in = to_string(inp);
+    cout<<in;
     in.resize(17, '0');
     char pt = 0;
-    //cout<<in << "\n";
     for (char i = 16; i > 0; i--) {
-        if (in.at(i) != '0')
-            pt = i;
+       if (in.at(i) != '0') pt = i;
     }
-    char i = to_string(inp).length() - to_string(inp).find('.') - (pt);
-    numbr = numberToArray(inp * pow(10, i));
+    in.resize(pt, '0');
+    cout<<in;
+    char i = in.length() - in.find('.') - 1; // - (pt);
+    numberToArray(inp * pow(10, i), numbr);
     exponent = -i;
+    in.erase();
 }
 
-std::vector<unsigned char> Decimal::numberToArray(auto numb)
+void Decimal::numberToArray(auto numb, unsigned char (&outArray)[7])
 {
-    std::vector<unsigned char> rArray;
-    std::vector<double> temp;
-    rArray.resize(7);
-    temp.resize(7);
+    double temp[7];
     temp[0] = numb / double(pow(256, 6));
-    rArray[0] = floor(temp[0]);
+    outArray[0] = floor(temp[0]);
     for (int i = 1; i < 7; i++)
     {
         temp[i] = fract(temp[i - 1]) * 256;
-        rArray[i] = floor(temp[i]);
+        outArray[i] = floor(temp[i]);
     }
-    return rArray;
 }
-unsigned long Decimal::arrayToNumber(std::vector<unsigned char> inArray)
+unsigned long Decimal::arrayToNumber(unsigned char inArray[7])//std::vector<unsigned char> inArray)
 {
     unsigned long numb = 0;
     for (int i = 0; i < 7; i++)
@@ -74,22 +82,33 @@ inline Decimal Decimal::operator+(Decimal right)
 }
 inline Decimal Decimal::operator+(auto right)
 {
-    return 0;
+    return Decimal(arrayToNumber(numbr) + right * pow(10, -exponent), exponent);
 }
 float Decimal::toFloat() {
     return arrayToNumber(numbr) * pow(10, exponent);
 }
+inline Decimal Decimal::operator*(Decimal right)
+{
+    return Decimal(arrayToNumber(numbr) * arrayToNumber(right.numbr), exponent + right.exponent);
+}
+inline Decimal Decimal::operator*(auto right)
+{
+    return Decimal(arrayToNumber(numbr) * right, exponent);
+}
 
 int main()
 {
-    double m = 1523232.24435255;
-    Decimal x = m;
-    //Decimal x{m};
-    cout << sizeof(Decimal) << "\n";
-    cout<< x.toString() << "\n";
-    cout<< x.exponent << "\n";
-    cout << x.arrayToNumber(x.numbr);
-
+    //Decimal y = 563.25;
+    Decimal x = {2, -2};
+    Decimal y = {52, -25};
+    cout<<(x * 25).toString();
+    cout<<(x * y).toString();
+    //Decimal x = {6626, -37};
+    //cout<<x.toFloat();
+    //cout << sizeof(x) << "\n";
+    //cout<< x.toString() << "\n";
+    //cout<< to_string(x.exponent) << "\n";
+    //cout << x.arrayToNumber(x.numbr);
 
     cout<<"\n";
     return 0;
