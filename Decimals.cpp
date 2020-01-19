@@ -45,7 +45,7 @@ void Decimal::numberToArray(auto numb, unsigned char (&outArray)[7])
         temp[i] = fract(temp[i - 1]) * 256;
         outArray[i] = floor(temp[i]);
     }
-}
+} 
 unsigned long Decimal::arrayToNumber(unsigned char inArray[7])//std::vector<unsigned char> inArray)
 {
     unsigned long numb = 0;
@@ -78,7 +78,12 @@ string Decimal::toString()
 }
 inline Decimal Decimal::operator+(Decimal right)
 {
-    return 0;
+    if (right.exponent < 0)
+        return Decimal(arrayToNumber(right.numbr) * pow(10, -right.exponent) + arrayToNumber(numbr) * pow(10, exponent - right.exponent), -right.exponent);
+    //if (right.exponent > exponent)
+    //    return Decimal(arrayToNumber(right.numbr) * pow(10, exponent) + arrayToNumber(right.numbr) * pow(10, right.exponent), exponent);
+    //else
+    //    return Decimal(arrayToNumber(numbr) + arrayToNumber(right.numbr) * pow(10, exponent - right.exponent), exponent);
 }
 inline Decimal Decimal::operator+(auto right)
 {
@@ -99,10 +104,12 @@ inline Decimal Decimal::operator*(auto right)
 int main()
 {
     //Decimal y = 563.25;
-    Decimal x = {2, -2};
-    Decimal y = {52, -25};
-    cout<<(x * 25).toString();
-    cout<<(x * y).toString();
+    Decimal x = {24, -2};
+    Decimal y = {2, -2};
+    cout<<(x * 5).toString() << "\n";
+    cout<<(x * y).toString() << "\n";
+    cout<<(x + y).toString() << "\n";
+    cout<<(x + 5).toString() << "\n";
     //Decimal x = {6626, -37};
     //cout<<x.toFloat();
     //cout << sizeof(x) << "\n";
