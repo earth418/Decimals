@@ -11,13 +11,13 @@ struct Decimal
 {
     inline long pow10(char exp);
     inline long num();
-    /*std::vector<unsigned char>*/ void numberToArray(auto numb, unsigned char (&outArray)[6]);
+    /*std::vector<unsigned char>*/ void numberToArray(auto numb, unsigned char (&outArray)[7]);
     
-    unsigned long arrayToNumber(unsigned char inArray[6]);//std::vector<unsigned char> inArray);
+    unsigned long arrayToNumber(unsigned char inArray[7]);//std::vector<unsigned char> inArray);
     
     char exponent;
-    char scalar;
-    unsigned char numbr[6] = {0, 0, 0, 0, 0, 0};
+    // char scalar;
+    unsigned char numbr[7] = {0, 0, 0, 0, 0, 0, 0};
 
     Decimal(auto num, auto exp);
     Decimal(long inp);

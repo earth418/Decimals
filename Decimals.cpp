@@ -25,39 +25,38 @@ Decimal::Decimal(int inp)
 Decimal::Decimal(double inp)
 {
     string in = to_string(inp);
-    cout<<in;
-    in.resize(17, '0');
+    // cout<<in;
+    in.resize(18, '0');
     char pt = 0;
-    for (char i = 16; i > 0; i--) {
+    for (char i = 17; i > 0; i--) {
        if (in.at(i) != '0') pt = i;
     }
-    in.resize(pt, '0');
-    cout<<in;
+    in.resize(pt + 1, '0');
+    // cout<<in;
     char i = in.length() - in.find('.') - 1; // - (pt);
     numberToArray(inp * pow(10, i), numbr);
     exponent = -i;
     in.erase();
 }
 
-void Decimal::numberToArray(auto numb, unsigned char (&outArray)[6])
+void Decimal::numberToArray(auto numb, unsigned char (&outArray)[7])
 {
-    double temp[6];
-    double scalr = numb / double(pow(256, 5));
-    outArray[0] = floor(fract(scalr) * 256);
-    for (int i = 1; i < 6; i++)
+    double temp[7];
+    temp[0] = numb / double(pow(256, 6));
+    outArray[0] = floor(temp[0]);
+    for (int i = 1; i < 7; i++)
     {
         temp[i] = fract(temp[i - 1]) * 256;
         outArray[i] = floor(temp[i]);
     }
-    scalar = floor(scalr);
 }
 
-unsigned long Decimal::arrayToNumber(unsigned char inArray[6])//std::vector<unsigned char> inArray)
+unsigned long Decimal::arrayToNumber(unsigned char inArray[7])//std::vector<unsigned char> inArray)
 {
     unsigned long numb = 0;
-    for (int i = 0; i < 6; i++)
-        numb += inArray[i] * pow(256, 5 - i);
-    numb += (scalar * pow(256, 6));
+    for (int i = 0; i < 7; i++)
+        numb += inArray[i] * pow(256, 6 - i);
+    //numb += (pow(256, 6));
     return numb;
 }
 
@@ -126,25 +125,22 @@ inline long Decimal::pow10(char exp)
 
 int main()
 {
-    //Decimal y = 563.25;
-    Decimal x = {20, 2};
-    Decimal y = {2, 3};
+    Decimal y = 563.25;
+    Decimal y2 = {56325, -2};
+    double why = 563.25;
+    Decimal x = {253, 2};
     //cout<<sizeof(Decimal) << "\n" << "\n";
     //cout<<sizeof(long) << "\n" << "\n";
-
-    cout<<(  x  ).toString() << "\n";
-    // cout<<(x * 5).toString() << "\n";
-    // cout<<(x * y).toString() << "\n";
-    // cout<<(x + y).toString() << "\n";
-    //double b = (x + 6).toFloat();
-    //cout<<to_string(b) << "\n";
-    //cout<<(x + 6).toString() << "\n";
-    //Decimal x = {6626, -37};
-    //cout<<x.toFloat();
-    //cout << sizeof(x) << "\n";
-    //cout<< x.toString() << "\n";
-    //cout<< to_string(x.exponent) << "\n";
-    //cout << x.arrayToNumber(x.numbr);
+    cout<<  to_string(why) << "\n";
+    cout<<(  y  ).toString() << "\n";
+    cout<<(y.toString()) << "\n";
+    // cout<<(  x  ).toString() << "\n";
+    cout<<(y * 4).toString() << "\n";
+    cout<<(x * 5).toString() << "\n";
+    cout<<(x * y).toString() << "\n";
+    cout<<(x + y).toString() << "\n";
+    cout<<to_string(y.exponent) << "\n";
+    cout<<to_string(y.num());
 
     cout<<"\n";
     return 0;
