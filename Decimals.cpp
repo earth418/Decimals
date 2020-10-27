@@ -1,5 +1,4 @@
 #include "Decimals.h"
-#include <iostream>
 
 using namespace std;
 
@@ -39,7 +38,7 @@ Decimal::Decimal(double inp)
     in.erase();
 }
 
-void Decimal::numberToArray(auto numb, unsigned char (&outArray)[7])
+void Decimal::numberToArray(double numb, unsigned char (&outArray)[7])
 {
     double temp[7];
     temp[0] = numb / double(pow(256, 6));
@@ -96,7 +95,7 @@ inline Decimal Decimal::operator+(Decimal right)
     //else
     //    return Decimal(number() + arrayToNumber(right.numbr) * pow(10, exponent - right.exponent), exponent);
 }
-inline Decimal Decimal::operator+(auto right)
+inline Decimal Decimal::operator+(double right)
 {
     if (exponent <= 0)
         return Decimal(num() * pow10(-exponent) + right, exponent);
@@ -110,7 +109,7 @@ inline Decimal Decimal::operator*(Decimal right)
 {
     return Decimal(num() * right.num(), exponent + right.exponent);
 }
-inline Decimal Decimal::operator*(auto right)
+inline Decimal Decimal::operator*(double right)
 {
     return Decimal(num() * right, exponent);
 }
