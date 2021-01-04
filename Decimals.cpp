@@ -7,7 +7,7 @@ inline long Decimal::num() {
     return arrayToNumber(numbr);
 }
 
-Decimal::Decimal(auto num, auto exp)
+Decimal::Decimal(long num, char exp)
 {
     numberToArray(num, numbr);
     exponent = exp;
@@ -39,7 +39,7 @@ Decimal::Decimal(double inp)
     in.erase();
 }
 
-void Decimal::numberToArray(auto numb, unsigned char (&outArray)[7])
+void Decimal::numberToArray(long numb, unsigned char (&outArray)[7])
 {
     double temp[7];
     temp[0] = numb / double(pow(256, 6));
@@ -51,7 +51,7 @@ void Decimal::numberToArray(auto numb, unsigned char (&outArray)[7])
     }
 }
 
-unsigned long Decimal::arrayToNumber(unsigned char inArray[7])//std::vector<unsigned char> inArray)
+unsigned long Decimal::arrayToNumber(unsigned char inArray[7])
 {
     unsigned long numb = 0;
     for (int i = 0; i < 7; i++)
@@ -69,7 +69,7 @@ string Decimal::toString()
         return to_string(num() * pow10(exponent));
     else if (exponent == 0 || exponent - digits == 0)
         return to_string(num());
-    else if (exponent < 0 && abs(exponent) > digits) {// && exponent > log10(number)) {
+    else if (exponent < 0 && abs(exponent) > digits) {
         rString.append("0.");
         for (int i = 0; i < abs(exponent) - (1 + digits); i++) {
             rString.append(to_string(0));
@@ -82,13 +82,14 @@ string Decimal::toString()
         return m;
     }
     else return 0;
-    //return to_string(number) + "e" + to_string(exponent);
 }
 
 inline Decimal Decimal::operator+(Decimal right)
 {
     if (right.exponent > exponent)
         return Decimal(num() * pow10(right.exponent - exponent) + right.num(), right.exponent);
+    else
+        return Decimal(num() + arrayToNumber(right.numbr) * pow(10, exponent - right.exponent), exponent);
     //if (right.exponent < 0)
     //    return Decimal(right.number() * pow10(-right.exponent) + number() * pow10(exponent - right.exponent), right.exponent);
     //if (right.exponent > exponent)
@@ -96,7 +97,7 @@ inline Decimal Decimal::operator+(Decimal right)
     //else
     //    return Decimal(number() + arrayToNumber(right.numbr) * pow(10, exponent - right.exponent), exponent);
 }
-inline Decimal Decimal::operator+(auto right)
+inline Decimal Decimal::operator+(double right)
 {
     if (exponent <= 0)
         return Decimal(num() * pow10(-exponent) + right, exponent);
@@ -110,7 +111,7 @@ inline Decimal Decimal::operator*(Decimal right)
 {
     return Decimal(num() * right.num(), exponent + right.exponent);
 }
-inline Decimal Decimal::operator*(auto right)
+inline Decimal Decimal::operator*(double right)
 {
     return Decimal(num() * right, exponent);
 }
@@ -129,16 +130,11 @@ int main()
     Decimal y2 = {56325, -2};
     double why = 563.25;
     Decimal x = {253, 2};
-    //cout<<sizeof(Decimal) << "\n" << "\n";
-    //cout<<sizeof(long) << "\n" << "\n";
     cout<<  to_string(why) << "\n";
     cout<<(  y  ).toString() << "\n";
-    cout<<(y.toString()) << "\n";
-    // cout<<(  x  ).toString() << "\n";
     cout<<(y * 4).toString() << "\n";
     cout<<(x * 5).toString() << "\n";
     cout<<(x * y).toString() << "\n";
-    cout<<(x + y).toString() << "\n";
     cout<<to_string(y.exponent) << "\n";
     cout<<to_string(y.num());
 
