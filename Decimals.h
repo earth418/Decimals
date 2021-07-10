@@ -9,28 +9,29 @@ using namespace std;
 
 struct Decimal
 {
-    inline long pow10(char exp);
-    inline long num();
-    void numberToArray(long numb, unsigned char (&outArray)[7]);
-    
-    unsigned long arrayToNumber(unsigned char inArray[7]);
-    
+private:
+
+    char base_byte; // contains the sign of the number
     char exponent;
+    unsigned char* numbers; // any additional precision necessary
 
-    unsigned char numbr[7] = {0, 0, 0, 0, 0, 0, 0};
+public:
+    Decimal() 
+    {
+        exponent = 0;
+        base_byte = 0;
+        numbers = nullptr;
+    }
 
-    Decimal(long num, char exp);
-    Decimal(long inp);
-    Decimal(int inp);
-    Decimal(double inp);
+    Decimal(int size)
+    {
+        exponent = 0;
+        base_byte = 0;
+        numbers = new unsigned char[size];
+    }
 
-    std::string toString();
+    Decimal::Decimal(double decimal);
 
-    inline Decimal operator+(Decimal right);
-    inline Decimal operator+(double right);
+    Decimal::Decimal(long long num, char exponent);
 
-    inline Decimal operator*(Decimal right);
-    inline Decimal operator*(double right);
-
-    double toFloat();
 };
