@@ -30,8 +30,8 @@ public:
         numbers = new unsigned char[size];
     }
 
-    Decimal::Decimal(double decimal);
+    Decimal(double decimal);
 
-    Decimal::Decimal(long long num, char exponent);
+    Decimal(long num, char exponent);
 
 };
